@@ -1,0 +1,153 @@
+/* En dış kapsayıcı: input alanı, halka ve butonları dikey olarak ortalar */
+.counter {
+  display: flex;              /* çocuklarını (input, halka, butonlar) flexbox ile diz */
+  flex-direction: column;     /* dikey sırala (üstten alta) */
+  align-items: center;        /* yatayda ortala */
+  gap: 16px;                  /* her bölüm arasına 16px boşluk koy */
+  margin-top: 80px;           /* sayfanın üstünden biraz boşluk bırak */
+  font-family: sans-serif;    /* yazı tipi */
+}
+
+/* Halkanın ortasındaki büyük sayı (count) */
+.counter-number {
+  font-size: 64px;   /* büyük punto, dikkat çeksin */
+  font-weight: bold;
+  margin: 0;          /* <p> elemanının varsayılan dış boşluğunu sıfırla, ortalamayı bozmasın */
+}
+
+/* Başlangıç sayısı girilen üst satır: input kutusu + "Geri Sayım Başlat" butonu */
+.start-input-row {
+  display: flex;
+  gap: 8px;            /* input ile buton arasına boşluk */
+}
+
+.start-input-row input {
+  width: 80px;
+  font-size: 16px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;   /* ince gri çerçeve */
+  border-radius: 6px;       /* köşeleri hafif yuvarlat */
+}
+
+.start-input-row button {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4caf50; /* yeşil, "artır" butonuyla aynı renk ailesi */
+  color: white;
+  cursor: pointer;            /* üzerine gelince el işareti çıksın */
+}
+
+.start-input-row button:hover {
+  opacity: 0.85;  /* üzerine gelince hafif soluklaşsın, "tıklanabilir" hissi versin */
+}
+
+/* Halkanın dış dairesi: conic-gradient burada inline style ile JSX'ten geliyor (App.jsx içinde) */
+.counter-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;          /* %50 = tam daire yapar */
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* iç daireyi/sayıyı ortalar */
+  transition: background 0.2s ease; /* renk/yüzde değişince ani değil, yumuşak geçiş yapsın */
+}
+
+/* Halkanın iç dairesi: dış dairenin ortasını "deler", böylece sadece kenarda halka kalır */
+.counter-circle-inner {
+  width: 170px; /* 220 - 170 = 50px → halkanın kalınlığı */
+  height: 170px;
+  border-radius: 50%;
+  background-color: white; /* sayfanın arka planıyla aynı renk olmalı, "delik" gibi görünmesi için */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Artır/azalt butonları ile sıfırla butonunu dikey olarak gruplayan kapsayıcı */
+.counter-buttons {
+  display: flex;
+  flex-direction: column;  /* üstte +/-, altta Sıfırla olacak şekilde dikey diz */
+  align-items: center;
+  gap: 12px;
+}
+
+/* + ve - butonlarını yan yana (satır halinde) dizen kapsayıcı */
+.counter-main-buttons {
+  display: flex;
+  gap: 16px;  /* iki buton arasındaki boşluk */
+}
+
+/* + ve - butonlarının ortak (paylaşılan) görünüm kuralları */
+.btn-increase,
+.btn-decrease {
+  display: flex;             /* içindeki karakteri (+/-) tam ortalamak için */
+  align-items: center;
+  justify-content: center;
+  padding: 0;                /* tarayıcının varsayılan iç boşluğunu sıfırla, ortalamayı bozmasın */
+  line-height: 1;             /* yazı etrafındaki gizli dikey boşluğu kaldır */
+  width: 56px;
+  height: 56px;
+  border-radius: 20%;         /* tam daire değil, hafif yuvarlatılmış kare görünümü */
+  border: none;
+  font-size: 50px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease; /* basma animasyonu yumuşak olsun */
+}
+
+/* + butonuna özel renk */
+.btn-increase {
+  background-color: #4caf50; /* yeşil */
+}
+
+.btn-increase:hover {
+  opacity: 0.85; /* üzerine gelince hafif soluklaşır */
+}
+
+/* - butonuna özel renk */
+.btn-decrease {
+  background-color: #e57373; /* kırmızı */
+}
+
+.btn-decrease:hover {
+  opacity: 0.85;
+}
+
+/* Butona basılı tutulduğu an (:active) küçük bir "basılma" animasyonu */
+.btn-increase:active,
+.btn-decrease:active,
+.btn-reset:active {
+  transform: scale(0.92); /* %92 boyuta küçülür, "tıklandı" hissi verir */
+}
+
+/* "-" karakterine özel ince ayar: bu karakter font yapısı yüzünden gözle hafif
+   aşağı/sağa kayık görünüyordu, bu yüzden sadece kendisini (butonu değil) kaydırıyoruz */
+.minus-char {
+  display: inline-block;  /* transform'un çalışması için gerekli (normal metin transform alamaz) */
+  transform: translateX(-1px) translateY(-4px); /* "-" karakteri görsel olarak alta ve sağa kaçtığı için yukarı/sola kaydırılıyor */
+}
+
+/* Sıfırla butonu: +/- butonlarının toplam genişliğine eşit, ama farklı renkte ve dikdörtgen şekilde */
+.btn-reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px; /* +/- butonlarının (56px) + aralarındaki boşluğun (16px) + diğer butonun (56px) toplam genişliği */
+  height: 40px;
+  border: none;
+  border-radius: 12px;   /* tam daire değil, yuvarlatılmış dikdörtgen */
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  background-color: #9e9e9e; /* gri, diğer iki butondan farklı, "ikincil" bir aksiyon olduğunu belli eder */
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.btn-reset:hover {
+  opacity: 0.85;
+}
